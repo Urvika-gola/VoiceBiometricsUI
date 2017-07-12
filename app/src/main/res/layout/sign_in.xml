@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.urvika.gola.filvoice.SignIn"
+    android:background="@drawable/material_design_wallpaper"
+    >
+<!--<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Say your pass phrase to Log In"
+    android:layout_margin="10dp"
+    android:textSize="20sp"
+    android:layout_gravity="center"
+    android:textAlignment="center"
+    />-->
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <ToggleButton
+            android:id="@+id/togglebut"
+            android:layout_height="100dp"
+            android:layout_width="100dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="bottom"
+            android:layout_margin="100dp"
+            android:background="@drawable/check"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/mLlayoutBottomButtons" >
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/mLlayoutBottomButtons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+            <com.andexert.library.RippleView
+                android:id="@+id/more"
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:layout_toLeftOf="@+id/more2"
+                android:layout_margin="5dp"
+                app:rv_color="@color/colorPrimaryDark"
+                app:rv_rippleDuration="500"
+                app:rv_alpha="244"
+                rv_centered="true">
+                <Button
+                    android:id="@+id/accessgranted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AUTHENTICATE ME!"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:layout_centerInParent="true"
+                    android:padding="10dp"
+                    android:background="?android:attr/selectableItemBackground" />
+            </com.andexert.library.RippleView>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

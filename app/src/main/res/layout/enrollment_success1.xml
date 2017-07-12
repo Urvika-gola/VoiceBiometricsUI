@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/material_design_wallpaper"
+    tools:context="com.urvika.gola.filvoice.MainActivity">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:layout_centerInParent="true"
+       android:gravity="center">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:text="Enrollment Successful"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/text2"
+        />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:maxHeight="150dp"
+        android:maxWidth="150dp"
+        android:elevation="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/s" />
+   </LinearLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/mLlayoutBottomButtons" >
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/mLlayoutBottomButtons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+            <com.andexert.library.RippleView
+                android:id="@+id/more"
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:layout_toLeftOf="@+id/more2"
+                android:layout_margin="5dp"
+                app:rv_color="@color/colorPrimaryDark"
+                app:rv_rippleDuration="500"
+                app:rv_alpha="244"
+                rv_centered="true">
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sign In!"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:layout_centerInParent="true"
+                    android:padding="10dp"
+                    android:background="?android:attr/selectableItemBackground" />
+            </com.andexert.library.RippleView>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

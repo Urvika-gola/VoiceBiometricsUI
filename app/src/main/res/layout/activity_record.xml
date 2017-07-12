@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.urvika.gola.filvoice.SignIn"
+    android:background="@drawable/material_design_wallpaper">
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:layout_margin="30px"
+    android:orientation="vertical"
+        android:gravity="center">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:orientation="horizontal">
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvphrase"
+        android:text="DUMMY PHRASE "
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:layout_margin="5dp"
+        android:textAlignment="center"/>
+            <ImageView
+                android:id="@+id/speakerimageview"
+                android:layout_width="100px"
+                android:layout_height="match_parent"
+               android:layout_gravity="right"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/speaker"
+                android:forceHasOverlappingRendering="false"
+                />
+        </RelativeLayout></LinearLayout>
+
+
+            <ToggleButton
+                android:id="@+id/togglebut"
+                android:layout_height="100dp"
+                android:layout_width="100dp"
+                android:layout_gravity="center"
+                android:background="@drawable/check"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textOff=""
+                android:textOn=""
+                android:layout_margin="20px"
+                android:gravity="center_horizontal"
+                />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.AppCompat">
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter Name"
+            android:inputType="text"
+            android:singleLine="true" />
+    </android.support.design.widget.TextInputLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/mLlayoutBottomButtons" >
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/mLlayoutBottomButtons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+            <com.andexert.library.RippleView
+                android:id="@+id/more"
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:layout_toLeftOf="@+id/more2"
+                android:layout_margin="5dp"
+                app:rv_color="@color/colorPrimaryDark"
+                app:rv_rippleDuration="500"
+                app:rv_alpha="244"
+                rv_centered="true">
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Submit!"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:layout_centerInParent="true"
+                    android:padding="10dp"
+                    android:background="?android:attr/selectableItemBackground" />
+            </com.andexert.library.RippleView>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

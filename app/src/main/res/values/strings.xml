@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FILVoice</string>
+    <string name="title_activity_enrollment_success">EnrollmentSuccess</string>
+    <string name="title_activity_voice_input_thrice">VoiceInputThrice</string>
+    <string name="title_activity_record">record</string>
+    <string name="title_activity_record1">record1</string>
+</resources>
