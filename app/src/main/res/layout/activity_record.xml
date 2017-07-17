@@ -7,37 +7,33 @@
     android:orientation="vertical"
     tools:context="com.urvika.gola.filvoice.SignIn"
     android:background="@drawable/material_design_wallpaper">
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-        android:layout_margin="30px"
-    android:orientation="vertical"
-        android:gravity="center">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="100px"
-            android:orientation="horizontal">
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvphrase"
-        android:text="DUMMY PHRASE "
-        android:textSize="20sp"
-        android:textColor="#fff"
-        android:layout_margin="5dp"
-        android:textAlignment="center"/>
-            <ImageView
-                android:id="@+id/speakerimageview"
-                android:layout_width="100px"
-                android:layout_height="match_parent"
-               android:layout_gravity="right"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/speaker"
-                android:forceHasOverlappingRendering="false"
-                />
-        </RelativeLayout></LinearLayout>
-
-
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp">
+        <TextView  android:id="@+id/tvphrase"
+            android:text="DUMMY PHRASE "
+            android:paddingLeft="50dp"
+            android:textSize="20dp"
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_weight="0.9"
+            android:textColor="@color/colorAccent"
+ android:gravity="center"/>
+      <LinearLayout
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          android:layout_gravity="right"
+          android:layout_weight="0.1"
+          >
+          <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+android:layout_margin="25dp"
+              android:elevation="5dp" android:id="@+id/speakerimageview"
+            android:background="@drawable/volume"
+            /></LinearLayout>
+    </LinearLayout>
             <ToggleButton
                 android:id="@+id/togglebut"
                 android:layout_height="100dp"
@@ -48,24 +44,39 @@
                 android:focusableInTouchMode="false"
                 android:textOff=""
                 android:textOn=""
-                android:layout_margin="20px"
+                android:layout_margin="70dp"
                 android:gravity="center_horizontal"
                 />
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat">
-        <EditText
+   <!-- <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Enter Name"
-            android:inputType="text"
-            android:singleLine="true" />
-    </android.support.design.widget.TextInputLayout>
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColorHint="@color/white"
+            android:inputType="textCapCharacters"
+            android:textColor="@color/white"/>-->
+
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mtf_image="@drawable/ic_account_circle_black_24dpa"
+        app:mtf_labelColor="@color/white"
+        android:layout_margin="5dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Name"
+            android:id="@+id/entername"
+            android:textColorHint="@color/white"
+            android:inputType="textCapCharacters"
+            android:textSize="15sp"
+            />
+
+    </com.github.florent37.materialtextfield.MaterialTextField>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"

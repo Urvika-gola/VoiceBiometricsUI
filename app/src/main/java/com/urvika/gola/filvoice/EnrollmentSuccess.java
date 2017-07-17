@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Activity;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.andexert.library.RippleView;
@@ -18,8 +19,8 @@ public class EnrollmentSuccess extends Activity {
         TextView myTextView1 = (TextView) findViewById(R.id.text2);
         Typeface typeface1 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
         myTextView1.setTypeface(typeface1);
-
-        final RippleView rippleView=(RippleView)findViewById(R.id.more);
+        Button button = (Button) findViewById(R.id.submit);
+button.setTypeface(typeface1);        final RippleView rippleView=(RippleView)findViewById(R.id.more);
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
@@ -28,6 +29,4 @@ public class EnrollmentSuccess extends Activity {
                 startActivity(i);
             }
         });
-    }
-
-}
+    }}

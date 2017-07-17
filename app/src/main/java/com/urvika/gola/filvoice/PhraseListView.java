@@ -9,7 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-public class PhraseListView extends AppCompatActivity {
+public class
+PhraseListView extends AppCompatActivity {
     ListView listView;
 
     @Override
@@ -58,7 +59,7 @@ public class PhraseListView extends AppCompatActivity {
                 // ListView Clicked item value
                 String  itemValue    = (String) listView.getItemAtPosition(position);
                 gp.setphrase(itemValue);
-                Intent i = new Intent(PhraseListView.this,record.class);
+               Intent i = new Intent(PhraseListView.this,record.class);
                 startActivity(i);
             }});
     }

@@ -8,16 +8,18 @@
     tools:context="com.urvika.gola.filvoice.SignIn"
     android:background="@drawable/material_design_wallpaper"
     >
-<!--<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Say your pass phrase to Log In"
-    android:layout_margin="10dp"
-    android:textSize="20sp"
-    android:layout_gravity="center"
-    android:textAlignment="center"
-    />-->
-
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="100dp">
+    <TextView  android:id="@+id/loginphrase"
+        android:text="Say your pass phrase to log in "
+        android:textSize="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:textColor="@color/colorAccent"
+        android:gravity="center"/>
+</LinearLayout>
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"

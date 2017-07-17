@@ -30,7 +30,7 @@
             android:name=".record"
             android:label="@string/title_activity_record" />
         <activity android:name=".SignIn" />
-        <activity android:name=".RecyclerViewActivity"></activity>
+        <activity android:name=".RecyclerViewActivity" />
     </application>
 
 </manifest>
