@@ -1,12 +1,16 @@
 package com.urvika.gola.filvoice;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
         import android.support.v7.widget.RecyclerView;
-        import android.util.Log;
+import android.transition.Explode;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.util.Log;
         import android.view.View;
 
         import java.util.ArrayList;
@@ -40,8 +44,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MyRecyclerViewAdapter(getDataSet());
         mRecyclerView.setAdapter(mAdapter);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
-        mRecyclerView.addItemDecoration(itemDecoration);
+       /* RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
+        mRecyclerView.addItemDecoration(itemDecoration);*/
 
         // mRecyclerView.addItemDecoration(new DividerDecoration(this, LinearLayoutManager.VERTICAL));
         // Code to Add an item with default animation
@@ -71,4 +75,5 @@ public class RecyclerViewActivity extends AppCompatActivity {
         }
         return results;
     }
+
     }

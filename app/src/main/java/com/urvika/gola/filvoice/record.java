@@ -1,5 +1,6 @@
 package com.urvika.gola.filvoice;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaRecorder;
@@ -7,16 +8,22 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.andexert.library.RippleView;
+import com.kofigyan.stateprogressbar.StateProgressBar;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -28,15 +35,17 @@ public class record extends AppCompatActivity {
     String s=gp1.getphrase();
     TextToSpeech t1;
     private WavAudioRecorder mRecorder;
+    String[] descriptionData = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-        ///storage/emulated/0
+///storage/emulated/0
+        final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
+        
       //  OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/urvika.mp4";
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
-
         t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -65,9 +74,13 @@ public class record extends AppCompatActivity {
         mTextView.setText(s);
         mTextView.setTypeface(typeface2);
 
+
+
+        final       StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.your_state_progress_bar_id);
+        stateProgressBar.setStateDescriptionData(descriptionData);
         final RippleView rippleView=(RippleView)findViewById(R.id.more);
 
-        final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
+//        final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
@@ -75,13 +88,40 @@ public class record extends AppCompatActivity {
                    stopRecord();
                     toggle.clearAnimation();
 
+                    if(attempt==1)
+                    {
+                        stateProgressBar.enableAnimationToCurrentState(true);
+                        stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
+                        stateProgressBar.setAnimationDuration(2000);
 
+                    }
+                    if(attempt==2)
+                    {
+                        stateProgressBar.enableAnimationToCurrentState(true);
+                        stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
+                        stateProgressBar.setAnimationDuration(2000);
+                    }
+                    if(attempt==3)
+                    {
+                      stateProgressBar.setAllStatesCompleted(true);
+                    }
                 }
                 else {
                     // The toggle is ENABLE
+                    if(attempt>=3)
+                    {
+                        attempt=0;
+                        stateProgressBar.setAllStatesCompleted(false);
+
+                      stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
+                        stateProgressBar.enableAnimationToCurrentState(true);
+                        stateProgressBar.setAnimationDuration(2000);
+
+                    }
                     toggle.startAnimation(myAnim);
 
                     ++attempt;
+
                     try {
                         startRecord();
                     } catch (IOException e) {
@@ -108,6 +148,7 @@ private void startRecord() throws IOException{
     mRecorder = WavAudioRecorder.getInstanse();
     if(attempt==1)
         {
+
             OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt1.wav";
         }
         if(attempt==2)
@@ -117,7 +158,6 @@ private void startRecord() throws IOException{
         if(attempt==3)
         {
             OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt3.mp4";
-            attempt=0; //reset.
         }
         mRecorder.setOutputFile(OUTPUT_FILE);
 
@@ -140,5 +180,6 @@ private void startRecord() throws IOException{
             mRecorder.release();
         }
     }
+
     }
 

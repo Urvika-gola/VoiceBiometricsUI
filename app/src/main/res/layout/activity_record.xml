@@ -34,7 +34,22 @@ android:layout_margin="25dp"
             android:background="@drawable/volume"
             /></LinearLayout>
     </LinearLayout>
-            <ToggleButton
+    <com.kofigyan.stateprogressbar.StateProgressBar
+        android:id="@+id/your_state_progress_bar_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:spb_currentStateNumber="one"
+        app:spb_maxStateNumber="three"
+        app:spb_stateLineThickness="1dp"
+        app:spb_stateBackgroundColor="#BDBDBD"
+        app:spb_stateForegroundColor="@color/green"
+        app:spb_stateNumberBackgroundColor="#808080"
+        app:spb_stateNumberForegroundColor="#eeeeee"
+        app:spb_currentStateDescriptionColor="#808080"
+        app:spb_stateDescriptionColor="@color/green"
+        app:spb_stateSize="30dp"
+        app:spb_checkStateCompleted="true"/>
+    <ToggleButton
                 android:id="@+id/togglebut"
                 android:layout_height="100dp"
                 android:layout_width="100dp"
@@ -47,17 +62,6 @@ android:layout_margin="25dp"
                 android:layout_margin="70dp"
                 android:gravity="center_horizontal"
                 />
-   <!-- <EditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter Name"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColorHint="@color/white"
-            android:inputType="textCapCharacters"
-            android:textColor="@color/white"/>-->
 
     <com.github.florent37.materialtextfield.MaterialTextField
         android:layout_width="match_parent"

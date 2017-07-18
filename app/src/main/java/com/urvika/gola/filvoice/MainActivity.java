@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onComplete(RippleView rippleView) {
-                Intent i = new Intent(MainActivity.this,PhraseListView.class);
-                // Intent i = new Intent(MainActivity.this,RecyclerViewActivity.class);
+               Intent i = new Intent(MainActivity.this,PhraseListView.class);
+              //   Intent i = new Intent(MainActivity.this,RecyclerViewActivity.class);
                 startActivity(i);
             }
 
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-     //   t1.speak("Welcome to Fidelity Voice Authentication System. Please start the authentication process by speaking your pass phrase. ",TextToSpeech.QUEUE_FLUSH, null, "aa");
+     // t1.speak("Welcome to Fidelity Voice Authentication System. Please start the authentication process by speaking your pass phrase. ",TextToSpeech.QUEUE_FLUSH, null, "aa");
             }
         }, 2000);
     }
