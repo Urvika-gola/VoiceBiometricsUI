@@ -2,6 +2,7 @@ package com.urvika.gola.filvoice;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -22,28 +23,75 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.andexert.library.RippleView;
 import com.kofigyan.stateprogressbar.StateProgressBar;
+import com.wooplr.spotlight.SpotlightConfig;
+import com.wooplr.spotlight.SpotlightView;
 
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Locale;
+import java.util.Random;
 
 public class record extends AppCompatActivity {
     private String OUTPUT_FILE;
-    static  int attempt;
+    static  int attempt=0;
     final GetPhrase gp1=new GetPhrase();
     String s=gp1.getphrase();
     TextToSpeech t1;
     private WavAudioRecorder mRecorder;
     String[] descriptionData = {};
+    HttpClient httpclient = HttpClients.createDefault();
+    HttpPost request;
+
+    public record() throws IOException {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 ///storage/emulated/0
+        final Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
+        Random r=new Random();
+        //  String rstring=r.toString();
+      //  Log.i("som",rstring);
         final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
-        
+        new SpotlightView.Builder(this)
+                .introAnimationDuration(400)
+                .enableRevealAnimation(true)
+                .performClick(true)
+                .fadeinTextDuration(400)
+                .headingTvColor(Color.parseColor("#eb273f"))
+                .headingTvSize(32)
+                .headingTvText("Tap the Mic")
+                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvSize(16)
+                .subHeadingTvText("To Start/Stop Recording")
+                .maskColor(Color.parseColor("#dc000000"))
+                .target(findViewById(R.id.togglebut))
+                .lineAnimDuration(400)
+                .setTypeface(typeface2)
+                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .dismissOnTouch(true)
+                .dismissOnBackPress(true)
+                .enableDismissAfterShown(true)
+                .usageId("e") //UNIQUE ID
+                .show();
+
       //  OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/urvika.mp4";
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
         t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -63,10 +111,10 @@ public class record extends AppCompatActivity {
         });
 
         final TextView mTextView = (TextView) findViewById(R.id.tvphrase);
-        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
 
         EditText username=(EditText)findViewById(R.id.entername);  //Take input
         username.setTypeface(typeface2);
+      //  username.setHint("Enter Name");
 
         Button button = (Button) findViewById(R.id.submit);
         button.setTypeface(typeface2);
@@ -80,12 +128,12 @@ public class record extends AppCompatActivity {
         stateProgressBar.setStateDescriptionData(descriptionData);
         final RippleView rippleView=(RippleView)findViewById(R.id.more);
 
-//        final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
                     // The toggle is DIS - enabled
                    stopRecord();
+
                     toggle.clearAnimation();
 
                     if(attempt==1)
@@ -104,6 +152,7 @@ public class record extends AppCompatActivity {
                     if(attempt==3)
                     {
                       stateProgressBar.setAllStatesCompleted(true);
+
                     }
                 }
                 else {
@@ -119,8 +168,8 @@ public class record extends AppCompatActivity {
 
                     }
                     toggle.startAnimation(myAnim);
-
                     ++attempt;
+                    Log.i("picu",""+attempt);
 
                     try {
                         startRecord();
@@ -180,6 +229,27 @@ private void startRecord() throws IOException{
             mRecorder.release();
         }
     }
+    /*
+
+    void send() throws URISyntaxException {
+        URIBuilder builder=new URIBuilder("http://localhost:8080/voiceAuthenticationService/rest/profile/register");
+        URI uri=builder.build();
+         request = new HttpPost(uri);
+        request.setEntity(new FileEntity(new File(OUTPUT_FILE), ContentType.APPLICATION_OCTET_STREAM));    }
+        HttpResponse response = httpclient.execute(request);
+        HttpEntity entity = response.getEntity();
+        Log.i("somyu", entity);
+        if(entity!=null)
+    {
+        //System.out.println(EntityUtils.toString(entity));
+        try {
+            JSONObject obj=new JSONObject(EntityUtils.toString(entity));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Profile successfully created!\nYour ProfileID is: " + identificationProfileId);
 
     }
+*/
+     }
 

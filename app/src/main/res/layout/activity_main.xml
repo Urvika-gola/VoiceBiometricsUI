@@ -80,7 +80,7 @@
                 android:layout_toLeftOf="@+id/more2"
                 android:layout_margin="5dp"
                 app:rv_color="@color/colorAccent"
-                app:rv_rippleDuration="500"
+                app:rv_rippleDuration="200"
                 app:rv_alpha="244"
                 rv_centered="true">
                 <Button

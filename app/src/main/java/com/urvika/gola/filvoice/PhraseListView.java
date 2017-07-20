@@ -1,18 +1,26 @@
 package com.urvika.gola.filvoice;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 public class
 PhraseListView extends AppCompatActivity {
     ListView listView;
-
+    TextView selectpass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final GetPhrase gp=new GetPhrase();
@@ -21,6 +29,7 @@ PhraseListView extends AppCompatActivity {
         setContentView(R.layout.phrase_list_view);
 
         listView= (ListView) findViewById(R.id.list);
+        selectpass=(TextView) findViewById(R.id.selectpass);
 
         // Defined Array values to show in ListView
         String[] values = new String[] { "I am going to make him an offer he cannot refuse",
@@ -34,7 +43,8 @@ PhraseListView extends AppCompatActivity {
                 "My name is unknown to you",
                 "Be yourself everyone else is already taken"
         };
-
+        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
+       selectpass.setTypeface(typeface2);
         // Define a new Adapter
         // First parameter - Context
         // Second parameter - Layout for the row
@@ -59,8 +69,19 @@ PhraseListView extends AppCompatActivity {
                 // ListView Clicked item value
                 String  itemValue    = (String) listView.getItemAtPosition(position);
                 gp.setphrase(itemValue);
-               Intent i = new Intent(PhraseListView.this,record.class);
-                startActivity(i);
+                Animation animation1= new AlphaAnimation(0.3f,1.0f);
+                animation1.setDuration(1000);
+                view.startAnimation(animation1);
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask(){
+                            public void run(){
+                                Intent i = new Intent(PhraseListView.this,record.class);
+                                startActivity(i);
+
+                            }
+                        },1000
+                );
+
             }});
     }
 }
