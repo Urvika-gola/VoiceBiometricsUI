@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:text="Enrollment Successful"
+        android:text="Enrollment Successful!"
         android:layout_marginBottom="30dp"
         android:id="@+id/text2"
         />
@@ -32,7 +32,7 @@
         android:maxWidth="150dp"
         android:elevation="10dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/s" />
+        android:src="@drawable/userlocked" />
    </LinearLayout>
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"

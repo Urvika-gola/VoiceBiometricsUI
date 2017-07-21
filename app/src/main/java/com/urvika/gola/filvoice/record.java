@@ -1,10 +1,12 @@
 package com.urvika.gola.filvoice;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaRecorder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
@@ -22,6 +24,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.andexert.library.RippleView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.wooplr.spotlight.SpotlightConfig;
 import com.wooplr.spotlight.SpotlightView;
@@ -29,12 +37,18 @@ import com.wooplr.spotlight.SpotlightView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,9 +68,9 @@ public class record extends AppCompatActivity {
     TextToSpeech t1;
     private WavAudioRecorder mRecorder;
     String[] descriptionData = {};
-    HttpClient httpclient = HttpClients.createDefault();
-    HttpPost request;
-
+    ProgressDialog progressDialog;
+    long totalSize = 0;
+     EditText username;
     public record() throws IOException {
     }
 
@@ -67,6 +81,8 @@ public class record extends AppCompatActivity {
 ///storage/emulated/0
         final Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
         Random r=new Random();
+        progressDialog = new ProgressDialog(this);
+
         //  String rstring=r.toString();
       //  Log.i("som",rstring);
         final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
@@ -89,7 +105,7 @@ public class record extends AppCompatActivity {
                 .dismissOnTouch(true)
                 .dismissOnBackPress(true)
                 .enableDismissAfterShown(true)
-                .usageId("e") //UNIQUE ID
+                .usageId("b") //UNIQUE ID
                 .show();
 
       //  OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/urvika.mp4";
@@ -112,7 +128,7 @@ public class record extends AppCompatActivity {
 
         final TextView mTextView = (TextView) findViewById(R.id.tvphrase);
 
-        EditText username=(EditText)findViewById(R.id.entername);  //Take input
+        username=(EditText)findViewById(R.id.entername);  //Take input
         username.setTypeface(typeface2);
       //  username.setHint("Enter Name");
 
@@ -152,7 +168,6 @@ public class record extends AppCompatActivity {
                     if(attempt==3)
                     {
                       stateProgressBar.setAllStatesCompleted(true);
-
                     }
                 }
                 else {
@@ -161,15 +176,14 @@ public class record extends AppCompatActivity {
                     {
                         attempt=0;
                         stateProgressBar.setAllStatesCompleted(false);
-
-                      stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
+                        stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
                         stateProgressBar.enableAnimationToCurrentState(true);
                         stateProgressBar.setAnimationDuration(2000);
 
                     }
                     toggle.startAnimation(myAnim);
                     ++attempt;
-                    Log.i("picu",""+attempt);
+//                    Log.i("picu",""+attempt);
 
                     try {
                         startRecord();
@@ -182,10 +196,10 @@ public class record extends AppCompatActivity {
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
             public void onComplete(RippleView rippleView) {
-                Intent i = new Intent(record.this,EnrollmentSuccess.class);
-                startActivity(i);
+                new SubmitPostHandler().execute("");
             }
         });
+
     }
 
 
@@ -197,7 +211,6 @@ private void startRecord() throws IOException{
     mRecorder = WavAudioRecorder.getInstanse();
     if(attempt==1)
         {
-
             OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt1.wav";
         }
         if(attempt==2)
@@ -229,27 +242,97 @@ private void startRecord() throws IOException{
             mRecorder.release();
         }
     }
-    /*
 
-    void send() throws URISyntaxException {
-        URIBuilder builder=new URIBuilder("http://localhost:8080/voiceAuthenticationService/rest/profile/register");
-        URI uri=builder.build();
-         request = new HttpPost(uri);
-        request.setEntity(new FileEntity(new File(OUTPUT_FILE), ContentType.APPLICATION_OCTET_STREAM));    }
-        HttpResponse response = httpclient.execute(request);
-        HttpEntity entity = response.getEntity();
-        Log.i("somyu", entity);
-        if(entity!=null)
-    {
-        //System.out.println(EntityUtils.toString(entity));
-        try {
-            JSONObject obj=new JSONObject(EntityUtils.toString(entity));
-        } catch (JSONException e) {
-            e.printStackTrace();
+    private class SubmitPostHandler extends AsyncTask<String, Integer, String> {
+
+        private String postMessage;
+        @Override
+        protected void onPreExecute() {
+            //progressBar.setProgress(0);
+            progressDialog.show();
+            super.onPreExecute();
         }
-        System.out.println("Profile successfully created!\nYour ProfileID is: " + identificationProfileId);
 
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            /*progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(progress[0]);*/
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            postMessage = params[0];
+            if(null==postMessage){
+                postMessage = "";
+            }
+            return submitPost();
+        }
+
+        @SuppressWarnings("deprecation")
+        private String submitPost() {
+
+            String responseString = null;
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://192.168.43.68:8080/voiceAuthenticationService/rest/profile/register");
+            HttpContext localContext = new BasicHttpContext();
+            try {
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                        new AndroidMultiPartEntity.ProgressListener() {
+
+                            @Override
+                            public void transferred(long num) {
+                                publishProgress((int) ((num / (float) totalSize) * 100));
+                            }
+                        });
+
+                entity.addPart("file1", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt1.wav")));
+                entity.addPart("file2", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt2.wav")));
+                entity.addPart("file3", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt3.wav")));
+                entity.addPart("username", new StringBody(username.getText().toString()));
+                totalSize = entity.getContentLength();
+                httppost.setEntity(entity);
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost, localContext);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                } else {
+                    responseString = "Problem occurred while submitting the post.";
+                    System.out.println("response is 2 :: "+EntityUtils.toString(r_entity));
+                }
+
+            } catch (ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            System.out.println("Response from server: " + result);
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+            if (result != null && !result.equalsIgnoreCase("")) {
+                try {
+                    JSONObject response = new JSONObject(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+
+            }
+            Intent i = new Intent(record.this,EnrollmentSuccess.class);
+            startActivity(i);
+            super.onPostExecute(result);
+        }
     }
-*/
-     }
+}
 

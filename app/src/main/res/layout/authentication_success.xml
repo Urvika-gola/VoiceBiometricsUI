@@ -21,7 +21,7 @@
         android:textAlignment="center"
         android:textSize="20sp"
             android:layout_margin="20dp"
-        android:text="Hi Paul, Welcome Back!"
+        android:text="Hi XYZ, Welcome Back!"
         android:id="@+id/text2"
         />
     <ImageView
