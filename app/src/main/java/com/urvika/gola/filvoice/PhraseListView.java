@@ -72,10 +72,6 @@ PhraseListView extends AppCompatActivity {
                 // ListView Clicked item value
                 String  itemValue    = (String) listView.getItemAtPosition(position);
                 gp.setphrase(itemValue);
-              /*  Animation animation1= new AlphaAnimation(0.3f,1.0f);
-                animation1.setDuration(1000);
-                view.startAnimation(animation1);
-            */
 
                 ColorDrawable[] color = {
                         new ColorDrawable(Color.parseColor("#C21F9F")),
@@ -102,7 +98,6 @@ PhraseListView extends AppCompatActivity {
                             }
                         },1000
                 );
-
             }});
     }
 }

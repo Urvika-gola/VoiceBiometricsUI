@@ -37,15 +37,13 @@ public class MainActivity extends AppCompatActivity {
         frameAnimation.start();
 
         TextView myTextView = (TextView) findViewById(R.id.text1);
+        TextView myTextView1 = (TextView) findViewById(R.id.text2);
+        Button button = (Button) findViewById(R.id.button);
+
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
         myTextView.setTypeface(typeface);
-        TextView myTextView1 = (TextView) findViewById(R.id.text2);
-        Typeface typeface1 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
-        myTextView1.setTypeface(typeface1);
-
-        Button button = (Button) findViewById(R.id.button);
-        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
-        button.setTypeface(typeface2);
+        myTextView1.setTypeface(typeface);
+        button.setTypeface(typeface);
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
 
@@ -57,15 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-       /* button.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-              Intent i = new Intent(MainActivity.this,PhraseListView.class);
-               // Intent i = new Intent(MainActivity.this,RecyclerViewActivity.class);
-                startActivity(i);
-            }
-        });*/
         t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -75,12 +65,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         ImageView image = (ImageView) findViewById(R.id.imageView);
         image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-
                     Intent i = new Intent(MainActivity.this, SignIn.class);
                     startActivity(i);
 
@@ -91,9 +79,8 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-     t1.speak("Welcome to Fidelity Voice Authentication System. Please start the authentication process by speaking your pass phrase. ",TextToSpeech.QUEUE_FLUSH, null, "aa");
+        t1.speak("Welcome to Fidelity Voice Authentication System. Please start the authentication process by speaking your pass phrase. ",TextToSpeech.QUEUE_FLUSH, null, "aa");
             }
         }, 2000);
     }
-
 }

@@ -17,10 +17,12 @@ public class EnrollmentSuccess extends Activity {
         setContentView(R.layout.enrollment_success1);
 
         TextView myTextView1 = (TextView) findViewById(R.id.text2);
-        Typeface typeface1 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
-        myTextView1.setTypeface(typeface1);
+        final RippleView rippleView=(RippleView)findViewById(R.id.more);
         Button button = (Button) findViewById(R.id.submit);
-button.setTypeface(typeface1);        final RippleView rippleView=(RippleView)findViewById(R.id.more);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
+        myTextView1.setTypeface(typeface);
+        button.setTypeface(typeface);
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override

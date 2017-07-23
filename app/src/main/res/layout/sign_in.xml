@@ -30,10 +30,10 @@
         <ToggleButton
             android:id="@+id/togglebut"
             android:layout_height="100dp"
+            android:layout_marginBottom="30dp"
             android:layout_width="100dp"
             android:layout_centerVertical="true"
             android:layout_gravity="bottom"
-            android:layout_margin="100dp"
             android:background="@drawable/check"
             android:focusable="false"
             android:focusableInTouchMode="false"

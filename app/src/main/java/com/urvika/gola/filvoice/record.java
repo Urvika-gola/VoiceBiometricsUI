@@ -33,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.wooplr.spotlight.SpotlightConfig;
 import com.wooplr.spotlight.SpotlightView;
+import com.wooplr.spotlight.prefs.PreferencesManager;
 
 
 import org.apache.http.HttpEntity;
@@ -70,7 +71,7 @@ public class record extends AppCompatActivity {
     String[] descriptionData = {};
     ProgressDialog progressDialog;
     long totalSize = 0;
-     EditText username;
+    EditText username;
     public record() throws IOException {
     }
 
@@ -78,14 +79,16 @@ public class record extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-///storage/emulated/0
-        final Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
-        Random r=new Random();
-        progressDialog = new ProgressDialog(this);
+        final Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
 
-        //  String rstring=r.toString();
-      //  Log.i("som",rstring);
+        progressDialog = new ProgressDialog(this);
         final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
+
+        //for resetting the spotlight
+        Context context=getApplicationContext();
+        PreferencesManager p=new PreferencesManager(context);
+        p.resetAll();
+
         new SpotlightView.Builder(this)
                 .introAnimationDuration(400)
                 .enableRevealAnimation(true)
@@ -100,12 +103,12 @@ public class record extends AppCompatActivity {
                 .maskColor(Color.parseColor("#dc000000"))
                 .target(findViewById(R.id.togglebut))
                 .lineAnimDuration(400)
-                .setTypeface(typeface2)
+                .setTypeface(typeface)
                 .lineAndArcColor(Color.parseColor("#eb273f"))
                 .dismissOnTouch(true)
                 .dismissOnBackPress(true)
                 .enableDismissAfterShown(true)
-                .usageId("b") //UNIQUE ID
+                .usageId("hint2") //UNIQUE ID
                 .show();
 
       //  OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/urvika.mp4";
@@ -129,27 +132,23 @@ public class record extends AppCompatActivity {
         final TextView mTextView = (TextView) findViewById(R.id.tvphrase);
 
         username=(EditText)findViewById(R.id.entername);  //Take input
-        username.setTypeface(typeface2);
-      //  username.setHint("Enter Name");
+        username.setTypeface(typeface);
 
         Button button = (Button) findViewById(R.id.submit);
-        button.setTypeface(typeface2);
+        button.setTypeface(typeface);
 
         mTextView.setText(s);
-        mTextView.setTypeface(typeface2);
+        mTextView.setTypeface(typeface);
 
-
-
-        final       StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.your_state_progress_bar_id);
+        final StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.your_state_progress_bar_id);
         stateProgressBar.setStateDescriptionData(descriptionData);
         final RippleView rippleView=(RippleView)findViewById(R.id.more);
 
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    // The toggle is DIS - enabled
+                    // The toggle is Disabled
                    stopRecord();
-
                     toggle.clearAnimation();
 
                     if(attempt==1)
@@ -157,7 +156,6 @@ public class record extends AppCompatActivity {
                         stateProgressBar.enableAnimationToCurrentState(true);
                         stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
                         stateProgressBar.setAnimationDuration(2000);
-
                     }
                     if(attempt==2)
                     {
@@ -171,7 +169,7 @@ public class record extends AppCompatActivity {
                     }
                 }
                 else {
-                    // The toggle is ENABLE
+                    // The toggle is enabled
                     if(attempt>=3)
                     {
                         attempt=0;
@@ -183,8 +181,6 @@ public class record extends AppCompatActivity {
                     }
                     toggle.startAnimation(myAnim);
                     ++attempt;
-//                    Log.i("picu",""+attempt);
-
                     try {
                         startRecord();
                     } catch (IOException e) {
@@ -201,7 +197,6 @@ public class record extends AppCompatActivity {
         });
 
     }
-
 
     private void stopRecord() {
         mRecorder.stop();
@@ -221,8 +216,7 @@ private void startRecord() throws IOException{
         {
             OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt3.mp4";
         }
-        mRecorder.setOutputFile(OUTPUT_FILE);
-
+    mRecorder.setOutputFile(OUTPUT_FILE);
     File outfile = new File(OUTPUT_FILE);
     if(outfile.exists())
         outfile.delete();

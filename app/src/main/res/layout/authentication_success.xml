@@ -49,6 +49,33 @@
             android:layout_height="wrap_content"
             android:id="@+id/text"
             android:text=""/>
-
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/mLlayoutBottomButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+        <com.andexert.library.RippleView
+            android:id="@+id/more"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            android:layout_toLeftOf="@+id/more2"
+            android:layout_margin="5dp"
+            app:rv_color="@color/colorPrimaryDark"
+            app:rv_rippleDuration="400"
+            app:rv_alpha="244"
+            rv_centered="true">
+            <Button
+                android:id="@+id/startover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Over!"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:layout_centerInParent="true"
+                android:padding="10dp"
+                android:background="?android:attr/selectableItemBackground" />
+        </com.andexert.library.RippleView>
     </LinearLayout>
 </RelativeLayout>
