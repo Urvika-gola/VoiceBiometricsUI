@@ -1,7 +1,9 @@
 package com.urvika.gola.filvoice;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -23,6 +25,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.andexert.library.RippleView;
+import com.wooplr.spotlight.SpotlightView;
+import com.wooplr.spotlight.prefs.PreferencesManager;
 import com.wooplr.spotlight.utils.Utils;
 
 import org.apache.http.HttpEntity;
@@ -53,7 +57,6 @@ public class SignIn extends AppCompatActivity {
     private String OUTPUT_FILE;
     private WavAudioRecorder mRecorder;
     File outfile ;
-    HttpClient httpclient;
     ProgressDialog progressDialog;
     long totalSize = 0;
    static public String userName;
@@ -62,17 +65,45 @@ public class SignIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in);
         ///storage/emulated/0
-      OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/final.wav";
+        OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/final.wav";
         outfile = new File(OUTPUT_FILE);
-//        httpclient = HttpClients.createDefault();
-       final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
-        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
-
-        progressDialog = new ProgressDialog(this);
-
         final TextView mTextView = (TextView) findViewById(R.id.loginphrase);
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
         mTextView.setTypeface(typeface);
+
+        //for resetting the spotlight!
+        Context context=getApplicationContext();
+        PreferencesManager p=new PreferencesManager(context);
+        p.resetAll();
+        progressDialog = new ProgressDialog(this);
+
+        final ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebut);
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
+
+        new SpotlightView.Builder(this)
+                .introAnimationDuration(400)
+                .enableRevealAnimation(true)
+                .performClick(true)
+                .fadeinTextDuration(400)
+                .headingTvColor(Color.parseColor("#eb273f"))
+                .headingTvSize(26)
+                .headingTvText("Say PassPhrase")
+                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvSize(16)
+                .subHeadingTvText("You Used For Enrollment")
+                .maskColor(Color.parseColor("#dc000000"))
+                .target(findViewById(R.id.togglebut))
+                .lineAnimDuration(400)
+                .setTypeface(typeface)
+                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .dismissOnTouch(true)
+                .dismissOnBackPress(false)
+                .enableDismissAfterShown(false)
+                .usageId("hint2") //UNIQUE ID
+                .show();
+
+
+
 
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -91,19 +122,6 @@ public class SignIn extends AppCompatActivity {
                 }
             }
         });
-
-        Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
-        final RippleView rippleView=(RippleView)findViewById(R.id.more);
-
-/*        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                Intent i = new Intent(SignIn.this,AuthenticationSuccess.class);
-                startActivity(i);
-            }
-        });*/
-
-
     }
     private void stopRecord() {
         mRecorder.stop();
