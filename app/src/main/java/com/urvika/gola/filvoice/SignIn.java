@@ -1,8 +1,10 @@
 package com.urvika.gola.filvoice;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaRecorder;
@@ -10,6 +12,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.RecoverySystem;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,11 +63,13 @@ public class SignIn extends AppCompatActivity {
     File outfile ;
     ProgressDialog progressDialog;
     long totalSize = 0;
-   static public String userName;
+    static public String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in);
+
         ///storage/emulated/0
         OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/final.wav";
         outfile = new File(OUTPUT_FILE);
@@ -101,9 +107,6 @@ public class SignIn extends AppCompatActivity {
                 .enableDismissAfterShown(false)
                 .usageId("hint2") //UNIQUE ID
                 .show();
-
-
-
 
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -171,18 +174,11 @@ public class SignIn extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             postMessage = params[0];
-            if(null==postMessage){
-                postMessage = "";
-            }
-            return submitPost();
-        }
 
-        @SuppressWarnings("deprecation")
-        private String submitPost() {
 
             String responseString = null;
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://192.168.43.68:8080/voiceAuthenticationService/rest/profile/login");
+            HttpPost httppost = new HttpPost("http://192.168.43.31:8080/voiceAuthenticationService/rest/profile/login");
             HttpContext localContext = new BasicHttpContext();
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -194,7 +190,6 @@ public class SignIn extends AppCompatActivity {
                             }
                         });
                 entity.addPart("file", new FileBody(new File(OUTPUT_FILE)));
-            //    entity.addPart("userName", new StringBody(postMessage));
                 totalSize = entity.getContentLength();
                 httppost.setEntity(entity);
 
@@ -209,6 +204,7 @@ public class SignIn extends AppCompatActivity {
                 } else {
                     responseString = "Problem occurred while submitting the post.";
                     System.out.println("response is 2 :: "+EntityUtils.toString(r_entity));
+
                 }
 
             } catch (ClientProtocolException e) {
@@ -249,4 +245,4 @@ public class SignIn extends AppCompatActivity {
                 super.onPostExecute(result);
             }
         }
-}
+    }
