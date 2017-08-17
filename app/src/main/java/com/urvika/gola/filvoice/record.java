@@ -71,7 +71,9 @@ public class record extends AppCompatActivity {
     String[] descriptionData = {};
     ProgressDialog progressDialog;
     long totalSize = 0;
-    EditText username;
+    public static EditText username;
+    static public String errorString, enrollmentString;
+
     public record() throws IOException {
     }
 
@@ -79,6 +81,15 @@ public class record extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+        //CLEAR THE AUDIO EVEN IF USER DOESNT RECORD, TO AVOID SENDING PREVIOUS RECORDING
+        for(int x=1;x<=3;x++)
+        {
+            OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt"+x+".wav";
+            File outfile = new File(OUTPUT_FILE);
+            if(outfile.exists())
+                outfile.delete();
+        }
+
         final Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
 
         progressDialog = new ProgressDialog(this);
@@ -130,7 +141,6 @@ public class record extends AppCompatActivity {
         });
 
         final TextView mTextView = (TextView) findViewById(R.id.tvphrase);
-
         username=(EditText)findViewById(R.id.entername);  //Take input
         username.setTypeface(typeface);
 
@@ -148,7 +158,7 @@ public class record extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
                     // The toggle is Disabled
-                   stopRecord();
+                    stopRecord();
                     toggle.clearAnimation();
 
                     if(attempt==1)
@@ -192,10 +202,9 @@ public class record extends AppCompatActivity {
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
             public void onComplete(RippleView rippleView) {
-                new SubmitPostHandler().execute("");
+               new SubmitPostHandler().execute("");
             }
         });
-
     }
 
     private void stopRecord() {
@@ -210,11 +219,11 @@ private void startRecord() throws IOException{
         }
         if(attempt==2)
         {
-            OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt2.mp4";
+            OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt2.wav";
         }
         if(attempt==3)
         {
-            OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt3.mp4";
+            OUTPUT_FILE= Environment.getExternalStorageDirectory()+"/attempt3.wav";
         }
     mRecorder.setOutputFile(OUTPUT_FILE);
     File outfile = new File(OUTPUT_FILE);
@@ -267,7 +276,7 @@ private void startRecord() throws IOException{
 
             String responseString = null;
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://192.168.43.68:8080/voiceAuthenticationService/rest/profile/register");
+            HttpPost httppost = new HttpPost("http://192.168.43.31:8080/voiceAuthenticationService/rest/profile/register");
             HttpContext localContext = new BasicHttpContext();
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -279,9 +288,9 @@ private void startRecord() throws IOException{
                             }
                         });
 
-                entity.addPart("file1", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt1.wav")));
-                entity.addPart("file2", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt2.wav")));
-                entity.addPart("file3", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt3.wav")));
+                entity.addPart("file", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt1.wav")));
+                entity.addPart("file", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt2.wav")));
+                entity.addPart("file", new FileBody(new File(Environment.getExternalStorageDirectory()+"/attempt3.wav")));
                 entity.addPart("username", new StringBody(username.getText().toString()));
                 totalSize = entity.getContentLength();
                 httppost.setEntity(entity);
@@ -312,9 +321,27 @@ private void startRecord() throws IOException{
             System.out.println("Response from server: " + result);
             if (progressDialog.isShowing())
                 progressDialog.dismiss();
+
             if (result != null && !result.equalsIgnoreCase("")) {
                 try {
                     JSONObject response = new JSONObject(result);
+                if(response.opt("error")!=null)
+                {
+                    errorString = (String) response.get("error");
+                    System.out.println("Error : "+enrollmentString);
+                    Intent i = new Intent(record.this, EnrollmentDenied.class);
+                    startActivity(i);
+                }
+                if(response.opt("enrollmentStatus")!=null)
+                {
+                    enrollmentString = (String) response.get("enrollmentStatus");
+                    System.out.println("Enrollment States :"+enrollmentString);
+                    if(enrollmentString.equals("Enrolled"))
+                    {
+                        Intent i = new Intent(record.this,EnrollmentSuccess.class);
+                        startActivity(i);
+                    }
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -323,10 +350,8 @@ private void startRecord() throws IOException{
             {
 
             }
-            Intent i = new Intent(record.this,EnrollmentSuccess.class);
-            startActivity(i);
+
             super.onPostExecute(result);
         }
     }
 }
-

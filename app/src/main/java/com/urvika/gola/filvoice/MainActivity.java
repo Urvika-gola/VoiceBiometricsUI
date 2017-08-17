@@ -20,27 +20,29 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     TextToSpeech t1;
+    ImageView img;
+    RippleView rippleView;
+    TextView myTextView,myTextView1;
+    Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageView img = (ImageView)findViewById(R.id.imageviewhandler);
+        img = (ImageView)findViewById(R.id.imageviewhandler);
         img.setBackgroundResource(R.drawable.spin_animation);
-
-        RippleView rippleView=(RippleView)findViewById(R.id.more);
-
         // Get the background, which has been compiled to an AnimationDrawable object.
         AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
-
         // Start the animation (looped playback by default).
         frameAnimation.start();
 
-        TextView myTextView = (TextView) findViewById(R.id.text1);
-        TextView myTextView1 = (TextView) findViewById(R.id.text2);
-        Button button = (Button) findViewById(R.id.button);
+        rippleView=(RippleView)findViewById(R.id.more);
+        myTextView = (TextView) findViewById(R.id.text1);
+        myTextView1 = (TextView) findViewById(R.id.text2);
+        button = (Button) findViewById(R.id.button);
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Medium.ttf");
+
         myTextView.setTypeface(typeface);
         myTextView1.setTypeface(typeface);
         button.setTypeface(typeface);

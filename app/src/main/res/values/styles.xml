@@ -22,5 +22,9 @@
     <style name="ButtonAuth" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:colorControlHighlight">@color/colorPrimaryDark</item>
     </style>
+<style name="liststyle">
 
+    <item name="android:textColor">@color/colorAccent</item>
+
+</style>
 </resources>
